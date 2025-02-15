@@ -2,8 +2,8 @@ import gradio as gr
 from transformers import pipeline
 from articles import *
 
-def summarise(text, max_length=130, min_length=30, model='google/mt5-base'):
-    summarizer = pipeline("summarization", model=model)
+def summarise(text, max_length=130, min_length=30, model_path='google/mt5-base'):
+    summarizer = pipeline("summarization", model=model_path, tokenizer=model_path)
 
     result = summarizer(text, max_length=int(max_length), min_length=int(min_length))
     summary = result[0]['summary_text']
@@ -45,12 +45,14 @@ with demo:
     rad.change(action1, inputs=rad, outputs=[text1])
     op = gr.Textbox(label='সংক্ষিপ্ত তথ্য', interactive=False)
 
-    def fn(hidden_text, model, max_length, min_length):
-        model = 'google/mt5-base'
-        return summarise(hidden_text, max_length, min_length, model)
+    model_path = "C:\\Users\\avish\\Downloads\\Text-Summarisation\\saved_model"
+
+    def fn(hidden_text, max_length, min_length):
     
-    submit1.click(fn=fn, inputs=[text1, rad2, max1, min1], outputs=[op])
-    submit2.click(fn=fn, inputs=[text2, rad3, max2, min2], outputs=[op])
+        return summarise(hidden_text, max_length, min_length, model_path)
+    
+    submit1.click(fn=fn, inputs=[text1, max1, min1], outputs=[op])
+    submit2.click(fn=fn, inputs=[text2, max2, min2], outputs=[op])
 
 demo.queue()
 demo.launch(share=True, pwa=True)
