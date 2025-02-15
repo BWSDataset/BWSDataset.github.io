@@ -33,7 +33,6 @@ with demo:
                 min2 = gr.Slider(25, 135, 30, label='সংক্ষিপ্ত তথ্যের সর্বনিম্ন দৈর্ঘ্য')
             submit2 = gr.Button('সংক্ষিপ্ত করুন')
 
-    # Update example text
     def action1(choice):
         articles = {
             'উদাহারণ ১': article_1,
@@ -45,10 +44,9 @@ with demo:
     rad.change(action1, inputs=rad, outputs=[text1])
     op = gr.Textbox(label='সংক্ষিপ্ত তথ্য', interactive=False)
 
-    model_path = "C:\\Users\\avish\\Downloads\\Text-Summarisation\\saved_model"
-
-    def fn(hidden_text, max_length, min_length):
+    model_path = os.path.join(os.path.dirname(__file__), "model")
     
+    def fn(hidden_text, max_length, min_length):
         return summarise(hidden_text, max_length, min_length, model_path)
     
     submit1.click(fn=fn, inputs=[text1, max1, min1], outputs=[op])
